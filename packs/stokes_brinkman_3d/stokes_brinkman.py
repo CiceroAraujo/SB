@@ -11,10 +11,9 @@ import time
 class stokes_solver:
     def __init__(self,M):
         prep_sb=preprocess_stokes(M)
+        print("-----generating LHS and RHS")
         assembled_matrices=assembly.global_assembly(prep_sb,M)
-        print("-----generating LHS")
         self.lhs = assembled_matrices.M
-        print("-----generating RHS")
         self.rhs= assembled_matrices.rhs
         print("-----solving linear system")
         self.sol=self.solve(self.lhs,self.rhs, prep_sb)
@@ -22,12 +21,15 @@ class stokes_solver:
         self.write_output(prep_sb, M)
 
     def solve(self,lhs, rhs,prep_sb):
+        # atribuindo condições de notorno
+        ############################## deveria estar no preprocessamento
         lhs=lhs.tolil()
         lhs[0]=np.zeros(prep_sb.nv+prep_sb.nfi)
         lhs[0,0]=1
         lhs[prep_sb.nv-1]=np.zeros(prep_sb.nv+prep_sb.nfi)
         lhs[prep_sb.nv-1,prep_sb.nv-1]=1#
         lhs=lhs.tocsc()
+        ##############################################
         sol=scipy.sparse.linalg.spsolve(lhs,rhs)
         return sol
 

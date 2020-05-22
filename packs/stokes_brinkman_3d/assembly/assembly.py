@@ -56,8 +56,8 @@ class global_assembly:
 
     def get_momentum_matrix(self, fd ,M, sb,col):
         dx, dy, dz= sb.dx, sb.dy, sb.dz
-        k_harms=M.k_harm[M.faces.all].T[0]
-        k_harms=np.ones(len(k_harms))
+        k_harms = M.k_harm[M.faces.all].T[0]
+        k_harms=np.ones(len(k_harms)) #Corrigir isso, i.e. calcular no preprocess
         mi=1
         k=1
 
