@@ -12,9 +12,13 @@ class stokes_solver:
     def __init__(self,M):
         prep_sb=preprocess_stokes(M)
         assembled_matrices=assembly.global_assembly(prep_sb,M)
+        print("-----generating LHS")
         self.lhs = assembled_matrices.M
+        print("-----generating RHS")
         self.rhs= assembled_matrices.rhs
+        print("-----solving linear system")
         self.sol=self.solve(self.lhs,self.rhs, prep_sb)
+        print("-----writting output file")
         self.write_output(prep_sb, M)
 
     def solve(self,lhs, rhs,prep_sb):
